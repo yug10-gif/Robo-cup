@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RoboCup Junior Event Site</title>
+  <meta
+    name="description"
+    content="RoboCup Junior event website with schedule, venue, leagues, and multi-team registration."
+  />
+
+  <link rel="preconnect" href="https://api.fontshare.com" />
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&f[]=cabinet-grotesk@500,700,800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root,
+    [data-theme="light"] {
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+      --text-3xl: clamp(2.5rem, 1rem + 4vw, 5rem);
+
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+      --space-20: 5rem;
+      --space-24: 6rem;
+
+      --color-bg: #f7f6f2;
+      --color-surface: #f9f8f5;
+      --color-surface-2: #ffffff;
+      --color-surface-offset: #efece6;
+      --color-border: #d8d4cb;
+      --color-divider: #e2ded6;
+      --color-text: #1f1d18;
+      --color-text-muted: #66635d;
+      --color-text-faint: #908d87;
+      --color-text-inverse: #fbfaf8;
+
+      --color-primary: #0a6c74;
+      --color-primary-hover: #07545a;
+      --color-primary-soft: #d8eaeb;
+
+      --color-secondary: #c48b2f;
+      --color-secondary-soft: #f3e5cb;
+
+      --color-success: #447a28;
+      --color-error: #a53d5f;
+      --color-blue: #2d6ab7;
+      --color-purple: #7556b8;
+
+      --radius-sm: 0.5rem;
+      --radius-md: 0.85rem;
+      --radius-lg: 1.2rem;
+      --radius-xl: 1.75rem;
+      --radius-full: 999px;
+
+      --shadow-sm: 0 1px 2px rgba(19, 18, 16, 0.05);
+      --shadow-md: 0 10px 30px rgba(19, 18, 16, 0.08);
+      --shadow-lg: 0 20px 60px rgba(19, 18, 16, 0.12);
+
+      --font-body: "Satoshi", Inter, sans-serif;
+      --font-display: "Cabinet Grotesk", "Satoshi", sans-serif;
+
+      --content-narrow: 720px;
+      --content-default: 1080px;
+      --content-wide: 1240px;
+
+      --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="dark"] {
+      --color-bg: #161513;
+      --color-surface: #1e1d1a;
+      --color-surface-2: #25231f;
+      --color-surface-offset: #2b2924;
+      --color-border: #393732;
+      --color-divider: #302e2a;
+      --color-text: #efede7;
+      --color-text-muted: #b6b2ab;
+      --color-text-faint: #8e8a84;
+      --color-text-inverse: #191815;
+
+      --color-primary: #5cabaf;
+      --color-primary-hover: #79c2c5;
+      --color-primary-soft: #23393b;
+
+      --color-secondary: #e0b35b;
+      --color-secondary-soft: #423720;
+
+      --color-success: #78ad5d;
+      --color-error: #d06b8b;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.18);
+      --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.28);
+      --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.38);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --color-bg: #161513;
+        --color-surface: #1e1d1a;
+        --color-surface-2: #25231f;
+        --color-surface-offset: #2b2924;
+        --color-border: #393732;
+        --color-divider: #302e2a;
+        --color-text: #efede7;
+        --color-text-muted: #b6b2ab;
+        --color-text-faint: #8e8a84;
+        --color-text-inverse: #191815;
+        --color-primary: #5cabaf;
+        --color-primary-hover: #79c2c5;
+        --color-primary-soft: #23393b;
+        --color-secondary: #e0b35b;
+        --color-secondary-soft: #423720;
+      }
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      text-size-adjust: none;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: 1.6;
+      color: var(--color-text);
+      background:
+        radial-gradient(circle at top left, rgba(10, 108, 116, 0.08), transparent 28%),
+        radial-gradient(circle at top right, rgba(196, 139, 47, 0.10), transparent 24%),
+        var(--color-bg);
+    }
+
+    img,
+    svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color var(--transition), background var(--transition), border-color var(--transition);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      border: 0;
+      background: none;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 3px;
+      border-radius: var(--radius-sm);
+    }
+
+    .skip-link {
+      position: absolute;
+      left: var(--space-4);
+      top: -40px;
+      background: var(--color-primary);
+      color: var(--color-text-inverse);
+      padding: var(--space-2) var(--space-4);
+      border-radius: var(--radius-full);
+      z-index: 100;
+    }
+
+    .skip-link:focus {
+      top: var(--space-4);
+    }
+
+    .container {
+      width: min(calc(100% - 2rem), var(--content-default));
+      margin-inline: auto;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--radius-full);
+      background: var(--color-primary-soft);
+      color: var(--color-primary);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(14px);
+      background: color-mix(in srgb, var(--color-bg) 82%, transparent);
+      border-bottom: 1px solid var(--color-divider);
+    }
+
+    .header-inner {
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: var(--color-text-inverse);
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      box-shadow: var(--shadow-sm);
+      flex-shrink: 0;
+    }
+
+    .brand-copy strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: var(--text-sm);
+      line-height: 1.1;
+    }
+
+    .brand-copy span {
+      display: block;
+      color: var(--color-text-muted);
+      font-size: var(--text-xs);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav a,
+    .theme-toggle {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-full);
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+    }
+
+    .nav a:hover,
+    .nav a.active,
+    .theme-toggle:hover {
+      color: var(--color-text);
+      background: var(--color-surface);
+    }
+
+    .hero {
+      padding: clamp(var(--space-12), 10vw, var(--space-24)) 0 var(--space-16);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: var(--space-8);
+      align-items: end;
+    }
+
+    .hero h1 {
+      margin: var(--space-4) 0 var(--space-5);
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      max-width: 10ch;
+    }
+
+    .hero p {
+      max-width: 62ch;
+      color: var(--color-text-muted);
+      margin: 0 0 var(--space-6);
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      padding: 0.9rem 1.15rem;
+      border-radius: var(--radius-full);
+      font-size: var(--text-sm);
+      font-weight: 700;
+      transition: transform var(--transition), background var(--transition), color var(--transition), border-color var(--transition);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: var(--color-text-inverse);
+    }
+
+    .btn-primary:hover {
+      background: var(--color-primary-hover);
+    }
+
+    .btn-secondary {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+    }
+
+    .hero-panel {
+      background: linear-gradient(180deg, var(--color-surface-2), var(--color-surface));
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      box-shadow: var(--shadow-md);
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-4);
+      margin-top: var(--space-6);
+    }
+
+    .stat {
+      padding: var(--space-4);
+      border-radius: var(--radius-lg);
+      background: var(--color-bg);
+      border: 1px solid var(--color-divider);
+    }
+
+    .stat strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      line-height: 1;
+      margin-bottom: var(--space-2);
+    }
+
+    .stat span {
+      color: var(--color-text-muted);
+      font-size: var(--text-sm);
+    }
+
+    .section {
+      padding: clamp(var(--space-10), 8vw, var(--space-20)) 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+      flex-wrap: wrap;
+    }
+
+    .section-head h2 {
+      margin: var(--space-3) 0 0;
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .section-head p {
+      max-width: 56ch;
+      color: var(--color-text-muted);
+      margin: 0;
+    }
+
+    .identity-grid,
+    .league-grid,
+    .venue-grid,
+    .schedule-grid {
+      display: grid;
+      gap: var(--space-4);
+    }
+
+    .identity-grid {
+      grid-template-columns: 1.2fr 0.8fr;
+    }
+
+    .venue-grid {
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+
+    .league-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .schedule-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card {
+      background: linear-gradient(180deg, var(--color-surface-2), var(--color-surface));
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card h3 {
+      margin: 0 0 var(--space-3);
+      font-size: var(--text-lg);
+      line-height: 1.15;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--color-text-muted);
+    }
+
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-3);
+      margin-top: var(--space-5);
+    }
+
+    .swatch {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+    }
+
+    .swatch-color {
+      height: 90px;
+    }
+
+    .swatch-copy {
+      padding: var(--space-3);
+      font-size: var(--text-sm);
+    }
+
+    .style-list,
+    .info-list,
+    .league-list,
+    .mini-list {
+      list-style: none;
+      padding: 0;
+      margin: var(--space-4) 0 0;
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .style-list li,
+    .info-list li,
+    .league-list li,
+    .mini-list li {
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-lg);
+      background: var(--color-bg);
+      border: 1px solid var(--color-divider);
+      color: var(--color-text-muted);
+      font-size: var(--text-sm);
+    }
+
+    .map-box {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: var(--space-4);
+      background:
+        linear-gradient(145deg, rgba(10, 108, 116, 0.08), transparent),
+        var(--color-surface-offset);
+      border: 1px dashed var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-5);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+
+    .pill {
+      padding: 0.55rem 0.85rem;
+      border-radius: var(--radius-full);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .league-card {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      min-height: 100%;
+    }
+
+    .league-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: var(--color-text-inverse);
+    }
+
+    .league-card.soccer .league-icon { background: var(--color-blue); }
+    .league-card.rescue .league-icon { background: var(--color-success); }
+    .league-card.onstage .league-icon { background: var(--color-purple); }
+
+    .schedule-day {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .timeline {
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .slot {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: var(--space-3);
+      align-items: start;
+      padding-top: var(--space-3);
+      border-top: 1px solid var(--color-divider);
+    }
+
+    .slot:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .slot time {
+      font-size: var(--text-sm);
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+
+    .slot strong {
+      display: block;
+      font-size: var(--text-sm);
+      margin-bottom: 0.15rem;
+    }
+
+    .slot span {
+      display: block;
+      color: var(--color-text-muted);
+      font-size: var(--text-sm);
+    }
+
+    .registration-wrap {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: var(--space-5);
+      align-items: start;
+    }
+
+    .form-panel,
+    .aside-panel {
+      background: linear-gradient(180deg, var(--color-surface-2), var(--color-surface));
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-4);
+    }
+
+    .field {
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      font-size: var(--text-sm);
+      font-weight: 700;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      min-height: 48px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+      background: var(--color-bg);
+      padding: 0.85rem 1rem;
+    }
+
+    .field textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .helper {
+      font-size: var(--text-xs);
+      color: var(--color-text-faint);
+    }
+
+    .team-card {
+      margin-top: var(--space-4);
+      border: 1px solid var(--color-divider);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      background: var(--color-bg);
+    }
+
+    .team-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+    }
+
+    .ghost-btn {
+      min-height: 40px;
+      padding: 0.65rem 0.95rem;
+      border-radius: var(--radius-full);
+      background: transparent;
+      color: var(--color-text-muted);
+      border: 1px solid var(--color-border);
+      font-size: var(--text-sm);
+      font-weight: 700;
+    }
+
+    .ghost-btn:hover {
+      background: var(--color-surface);
+      color: var(--color-text);
+    }
+
+    .submit-row {
+      display: flex;
+      gap: var(--space-3);
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: var(--space-5);
+      padding-top: var(--space-5);
+      border-top: 1px solid var(--color-divider);
+    }
+
+    .note {
+      color: var(--color-text-muted);
+      font-size: var(--text-sm);
+      max-width: 48ch;
+    }
+
+    .footer {
+      padding: var(--space-8) 0 var(--space-10);
+      border-top: 1px solid var(--color-divider);
+      color: var(--color-text-muted);
+      font-size: var(--text-sm);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 1080px) {
+      .hero-grid,
+      .identity-grid,
+      .venue-grid,
+      .registration-wrap,
+      .league-grid,
+      .schedule-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .header-inner {
+        align-items: flex-start;
+        padding-block: var(--space-4);
+        flex-direction: column;
+      }
+
+      .nav {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        max-width: 12ch;
+      }
+
+      .slot {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#top" class="brand" aria-label="RoboCup Junior homepage">
+        <div class="brand-mark" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L20 7V17L12 22L4 17V7L12 2Z" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M8.5 9.5L12 7L15.5 9.5V14.5L12 17L8.5 14.5V9.5Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="brand-copy">
+          <strong>RoboCup Junior</strong>
+          <span>Event website system</span>
+        </div>
+      </a>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#identity">Style guide</a>
+        <a href="#venue">Venue</a>
+        <a href="#leagues">Leagues</a>
+        <a href="#schedule">Schedule</a>
+        <a href="#register">Register</a>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme">
+          <span aria-hidden="true">◐</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero container" id="top">
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">Yug’s assigned sections</span>
+          <h1>Visual identity, leagues, venue, and registration in one build.</h1>
+          <p>
+            This front-end package gives your team a polished starting point for the event website, covering the parts assigned to you: design system, league pages, schedule and venue content, and a scalable multi-team registration interface.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#register">Open registration</a>
+            <a class="btn btn-secondary" href="#identity">View style guide</a>
+          </div>
+        </div>
+
+        <aside class="hero-panel" aria-label="Project overview">
+          <span class="eyebrow">Included sections</span>
+          <div class="hero-stats">
+            <div class="stat">
+              <strong>4</strong>
+              <span>Assigned deliverables covered</span>
+            </div>
+            <div class="stat">
+              <strong>3</strong>
+              <span>League blocks included</span>
+            </div>
+            <div class="stat">
+              <strong>1</strong>
+              <span>Responsive file to ship fast</span>
+            </div>
+            <div class="stat">
+              <strong>EN / FR</strong>
+              <span>Ready for bilingual content pass</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="identity">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Visual identity & style guide</span>
+            <h2>Design system</h2>
+          </div>
+          <p>
+            The identity uses warm neutral surfaces with a teal primary accent and gold support tone, giving the site a technical but welcoming event feel rather than a generic template look.
+          </p>
+        </div>
+
+        <div class="identity-grid">
+          <article class="card">
+            <h3>Brand direction</h3>
+            <p>
+              The visual language is built around clarity, youth robotics energy, and competition-day usability. It is suitable for schedules, venue instructions, league explainers, and forms without redesigning each section.
+            </p>
+
+            <div class="swatches" aria-label="Color swatches">
+              <div class="swatch">
+                <div class="swatch-color" style="background:#0a6c74;"></div>
+                <div class="swatch-copy"><strong>Primary</strong><br>#0A6C74</div>
+              </div>
+              <div class="swatch">
+                <div class="swatch-color" style="background:#c48b2f;"></div>
+                <div class="swatch-copy"><strong>Secondary</strong><br>#C48B2F</div>
+              </div>
+              <div class="swatch">
+                <div class="swatch-color" style="background:#f7f6f2;"></div>
+                <div class="swatch-copy"><strong>Background</strong><br>#F7F6F2</div>
+              </div>
+              <div class="swatch">
+                <div class="swatch-color" style="background:#1f1d18;"></div>
+                <div class="swatch-copy" style="color:#fff;background:#2b2823;"><strong>Text</strong><br>#1F1D18</div>
+              </div>
+            </div>
+          </article>
+
+          <aside class="card">
+            <h3>Style rules</h3>
+            <ul class="style-list">
+              <li>Display font: Cabinet Grotesk for strong section titles and event branding.</li>
+              <li>Body font: Satoshi for readable paragraphs, labels, and forms.</li>
+              <li>Rounded cards, restrained shadows, and editorial spacing for clarity.</li>
+              <li>Accent colors are used for actions and league distinction, not decoration overload.</li>
+              <li>Dark mode is built in and accessible from the header.</li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="venue">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Schedule & venue page</span>
+            <h2>Venue information</h2>
+          </div>
+          <p>
+            Replace the placeholder venue text below with your final event location, room names, transport guidance, and map embed once your team confirms the local venue details.
+          </p>
+        </div>
+
+        <div class="venue-grid">
+          <article class="card">
+            <h3>Venue overview</h3>
+            <ul class="info-list">
+              <li><strong>Venue name:</strong> Royal Vale / main competition venue placeholder</li>
+              <li><strong>Address:</strong> Replace with confirmed street address and postal code</li>
+              <li><strong>Check-in desk:</strong> Main entrance lobby, 08:00 onward</li>
+              <li><strong>Accessibility:</strong> Elevator access, barrier-free paths, and priority seating areas</li>
+              <li><strong>Transit:</strong> Add nearest metro, bus routes, parking, and drop-off notes</li>
+            </ul>
+
+            <div class="pill-row" style="margin-top:1rem;">
+              <span class="pill">Registration desk</span>
+              <span class="pill">Practice area</span>
+              <span class="pill">Competition field</span>
+              <span class="pill">Audience seating</span>
+            </div>
+          </article>
+
+          <aside class="map-box">
+            <div>
+              <h3 style="margin-top:0;">Map / floor block</h3>
+              <p style="color:var(--color-text-muted); margin:0;">
+                This placeholder card can later be replaced by an embedded map, venue illustration, or floorplan link from the floorplan team.
+              </p>
+            </div>
+            <svg viewBox="0 0 400 260" aria-hidden="true">
+              <rect x="8" y="8" width="384" height="244" rx="22" fill="none" stroke="currentColor" opacity="0.18"/>
+              <rect x="32" y="36" width="118" height="70" rx="16" fill="currentColor" opacity="0.08"/>
+              <rect x="168" y="36" width="200" height="48" rx="16" fill="currentColor" opacity="0.08"/>
+              <rect x="168" y="98" width="94" height="120" rx="16" fill="currentColor" opacity="0.08"/>
+              <rect x="274" y="98" width="94" height="120" rx="16" fill="currentColor" opacity="0.08"/>
+              <path d="M90 185C90 155 128 144 128 118C128 99 114 88 96 88C78 88 66 99 64 114" stroke="currentColor" stroke-width="10" stroke-linecap="round" opacity="0.6"/>
+              <circle cx="90" cy="194" r="12" fill="currentColor" opacity="0.85"/>
+            </svg>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="leagues">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">League pages</span>
+            <h2>Competition leagues</h2>
+          </div>
+          <p>
+            RoboCupJunior features Soccer, Rescue, and OnStage, which makes these three sections the right foundation for your league-page work.
+          </p>
+        </div>
+
+        <div class="league-grid">
+          <article class="card league-card soccer">
+            <div class="league-icon" aria-hidden="true">S</div>
+            <div>
+              <h3>Soccer</h3>
+              <p>
+                Autonomous robots compete on the field by tracking the ball, coordinating movement, and playing structured matches as a team.
+              </p>
+            </div>
+            <ul class="league-list">
+              <li>Good for rules, match format, field notes, and bracket links.</li>
+              <li>Add categories, team limits, and technical inspection notes.</li>
+              <li>Use a CTA like “View soccer handbook”.</li>
+            </ul>
+          </article>
+
+          <article class="card league-card rescue">
+            <div class="league-icon" aria-hidden="true">R</div>
+            <div>
+              <h3>Rescue</h3>
+              <p>
+                Rescue challenges robots to navigate line or disaster-style tasks while identifying and assisting victims through increasingly realistic scenarios.
+              </p>
+            </div>
+            <ul class="league-list">
+              <li>Best for obstacle notes, scoring references, and arena guidance.</li>
+              <li>Add line, maze, or local sub-league breakdowns if needed.</li>
+              <li>Use a CTA like “See rescue rules”.</li>
+            </ul>
+          </article>
+
+          <article class="card league-card onstage">
+            <div class="league-icon" aria-hidden="true">O</div>
+            <div>
+              <h3>OnStage</h3>
+              <p>
+                OnStage focuses on creative robot performances and judging around presentation, technical demonstration, and overall audience impact.
+              </p>
+            </div>
+            <ul class="league-list">
+              <li>Great for performance order, judging criteria, and media needs.</li>
+              <li>Add stage dimensions, sound check notes, and upload deadlines.</li>
+              <li>Use a CTA like “Prepare your performance”.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="schedule">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Event timing</span>
+            <h2>Schedule layout</h2>
+          </div>
+          <p>
+            This is a reusable visual schedule block for your assigned page. Replace the sample timings with the finalized event program from your organizing team.
+          </p>
+        </div>
+
+        <div class="schedule-grid">
+          <article class="card schedule-day">
+            <div>
+              <h3>Day 1</h3>
+              <p>Arrival, setup, and practice sessions.</p>
+            </div>
+            <div class="timeline">
+              <div class="slot">
+                <time>08:00</time>
+                <div><strong>Check-in</strong><span>Badges, welcome desk, team arrival.</span></div>
+              </div>
+              <div class="slot">
+                <time>10:00</time>
+                <div><strong>Practice access</strong><span>Venue familiarization and field testing.</span></div>
+              </div>
+              <div class="slot">
+                <time>14:00</time>
+                <div><strong>Technical review</strong><span>League-specific inspection and support.</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card schedule-day">
+            <div>
+              <h3>Day 2</h3>
+              <p>League rounds and judging activities.</p>
+            </div>
+            <div class="timeline">
+              <div class="slot">
+                <time>09:00</time>
+                <div><strong>Match start</strong><span>Soccer and rescue competition blocks.</span></div>
+              </div>
+              <div class="slot">
+                <time>11:30</time>
+                <div><strong>OnStage presentations</strong><span>Performance slots and interviews.</span></div>
+              </div>
+              <div class="slot">
+                <time>15:30</time>
+                <div><strong>Results review</strong><span>Scoring validation and rankings check.</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card schedule-day">
+            <div>
+              <h3>Day 3</h3>
+              <p>Finals, awards, and departure.</p>
+            </div>
+            <div class="timeline">
+              <div class="slot">
+                <time>09:30</time>
+                <div><strong>Final rounds</strong><span>Top teams compete in final sessions.</span></div>
+              </div>
+              <div class="slot">
+                <time>13:00</time>
+                <div><strong>Awards ceremony</strong><span>Recognition for teams and volunteers.</span></div>
+              </div>
+              <div class="slot">
+                <time>15:00</time>
+                <div><strong>Venue close-out</strong><span>Pack-up and departure guidance.</span></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="register">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Multi-team registration form</span>
+            <h2>Register multiple teams</h2>
+          </div>
+          <p>
+            This form lets one school or organization submit more than one team at once, which matches your assigned registration feature.
+          </p>
+        </div>
+
+        <div class="registration-wrap">
+          <aside class="aside-panel">
+            <h3 style="margin-top:0;">Form notes</h3>
+            <p style="color:var(--color-text-muted);">
+              The front-end below is ready for UI review and demo use. Your back-end teammate can later connect it to Formspree, Netlify Forms, Google Apps Script, Airtable, or a custom API.
+            </p>
+
+            <ul class="mini-list">
+              <li>Guardian and coach contact fields can be expanded as needed.</li>
+              <li>Language labels can be made bilingual with EN / FR helper text.</li>
+              <li>League selection supports Soccer, Rescue, and OnStage by default.</li>
+              <li>“Add another team” duplicates team blocks instantly with JavaScript.</li>
+            </ul>
+          </aside>
+
+          <form class="form-panel" id="multiTeamForm">
+            <div class="form-grid">
+              <div class="field">
+                <label for="organization">School / Organization</label>
+                <input id="organization" name="organization" type="text" placeholder="Example High School" required />
+              </div>
+
+              <div class="field">
+                <label for="coachName">Lead coach</label>
+                <input id="coachName" name="coachName" type="text" placeholder="Full name" required />
+              </div>
+
+              <div class="field">
+                <label for="email">Contact email</label>
+                <input id="email" name="email" type="email" placeholder="coach@email.com" required />
+              </div>
+
+              <div class="field">
+                <label for="phone">Phone</label>
+                <input id="phone" name="phone" type="tel" placeholder="+1 ..." />
+              </div>
+
+              <div class="field full">
+                <label for="address">Address</label>
+                <input id="address" name="address" type="text" placeholder="Street, city, province/state, postal code" />
+              </div>
+
+              <div class="field full">
+                <label for="notes">General notes</label>
+                <textarea id="notes" name="notes" placeholder="Accessibility, equipment, travel notes, language preference, or other details"></textarea>
+                <span class="helper">Tip: make this bilingual later, e.g. “General notes / Notes générales”.</span>
+              </div>
+            </div>
+
+            <div id="teamEntries">
+              <div class="team-card" data-team-card>
+                <div class="team-card-head">
+                  <h3 style="margin:0;">Team 1</h3>
+                </div>
+
+                <div class="form-grid">
+                  <div class="field">
+                    <label>Team name</label>
+                    <input type="text" name="teamName[]" placeholder="Team name" required />
+                  </div>
+
+                  <div class="field">
+                    <label>League</label>
+                    <select name="league[]" required>
+                      <option value="">Select a league</option>
+                      <option>Soccer</option>
+                      <option>Rescue</option>
+                      <option>OnStage</option>
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label>Division / Category</label>
+                    <input type="text" name="division[]" placeholder="Primary, Secondary, Lightweight, etc." />
+                  </div>
+
+                  <div class="field">
+                    <label>Number of students</label>
+                    <input type="number" min="1" name="students[]" placeholder="4" />
+                  </div>
+
+                  <div class="field full">
+                    <label>Team members</label>
+                    <textarea name="members[]" placeholder="List participant names"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top:1rem;">
+              <button class="ghost-btn" type="button" id="addTeamBtn">+ Add another team</button>
+            </div>
+
+            <div class="submit-row">
+              <p class="note">
+                Demo behavior currently shows the collected data on screen and in the browser console. Hook this to your final submission endpoint later.
+              </p>
+              <button class="btn btn-primary" type="submit">Submit registration</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>RoboCup Junior website starter for team collaboration.</span>
+      <span>Built for Yug’s assigned front-end sections.</span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const root = document.documentElement;
+      const toggle = document.querySelector("[data-theme-toggle]");
+      let theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      root.setAttribute("data-theme", theme);
+
+      function updateToggleLabel() {
+        toggle.setAttribute("aria-label", theme === "dark" ? "Switch to light mode" : "Switch to dark mode");
+        toggle.innerHTML = theme === "dark" ? "<span aria-hidden='true'>☀</span>" : "<span aria-hidden='true'>◐</span>";
+      }
+
+      updateToggleLabel();
+
+      toggle.addEventListener("click", function () {
+        theme = theme === "dark" ? "light" : "dark";
+        root.setAttribute("data-theme", theme);
+        updateToggleLabel();
+      });
+    })();
+
+    (function () {
+      const addTeamBtn = document.getElementById("addTeamBtn");
+      const teamEntries = document.getElementById("teamEntries");
+      const form = document.getElementById("multiTeamForm");
+      let teamCount = 1;
+
+      function createTeamCard(number) {
+        const card = document.createElement("div");
+        card.className = "team-card";
+        card.setAttribute("data-team-card", "");
+
+        card.innerHTML = `
+          <div class="team-card-head">
+            <h3 style="margin:0;">Team ${number}</h3>
+            <button class="ghost-btn remove-team-btn" type="button">Remove</button>
+          </div>
+
+          <div class="form-grid">
+            <div class="field">
+              <label>Team name</label>
+              <input type="text" name="teamName[]" placeholder="Team name" required />
+            </div>
+
+            <div class="field">
+              <label>League</label>
+              <select name="league[]" required>
+                <option value="">Select a league</option>
+                <option>Soccer</option>
+                <option>Rescue</option>
+                <option>OnStage</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Division / Category</label>
+              <input type="text" name="division[]" placeholder="Primary, Secondary, Lightweight, etc." />
+            </div>
+
+            <div class="field">
+              <label>Number of students</label>
+              <input type="number" min="1" name="students[]" placeholder="4" />
+            </div>
+
+            <div class="field full">
+              <label>Team members</label>
+              <textarea name="members[]" placeholder="List participant names"></textarea>
+            </div>
+          </div>
+        `;
+
+        return card;
+      }
+
+      function renumberTeams() {
+        const cards = teamEntries.querySelectorAll("[data-team-card]");
+        cards.forEach((card, index) => {
+          const heading = card.querySelector("h3");
+          heading.textContent = `Team ${index + 1}`;
+        });
+      }
+
+      addTeamBtn.addEventListener("click", function () {
+        teamCount += 1;
+        teamEntries.appendChild(createTeamCard(teamCount));
+        renumberTeams();
+      });
+
+      teamEntries.addEventListener("click", function (event) {
+        const removeBtn = event.target.closest(".remove-team-btn");
+        if (!removeBtn) return;
+
+        const cards = teamEntries.querySelectorAll("[data-team-card]");
+        if (cards.length === 1) {
+          alert("At least one team entry is required.");
+          return;
+        }
+
+        removeBtn.closest("[data-team-card]").remove();
+        renumberTeams();
+      });
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+        const payload = {
+          organization: formData.get("organization"),
+          coachName: formData.get("coachName"),
+          email: formData.get("email"),
+          phone: formData.get("phone"),
+          address: formData.get("address"),
+          notes: formData.get("notes"),
+          teams: []
+        };
+
+        const teamNames = formData.getAll("teamName[]");
+        const leagues = formData.getAll("league[]");
+        const divisions = formData.getAll("division[]");
+        const students = formData.getAll("students[]");
+        const members = formData.getAll("members[]");
+
+        for (let i = 0; i < teamNames.length; i++) {
+          payload.teams.push({
+            teamName: teamNames[i],
+            league: leagues[i],
+            division: divisions[i],
+            students: students[i],
+            members: members[i]
+          });
+        }
+
+        console.log("Registration payload:", payload);
+        alert("Demo submission captured. Connect this form to your final backend or form service.");
+      });
+    })();
+  </script>
+</body>
+</html>
